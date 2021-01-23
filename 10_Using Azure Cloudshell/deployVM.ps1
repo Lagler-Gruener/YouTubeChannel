@@ -91,7 +91,7 @@ rmdir "test1234"
 cd Azure:
 dir
 
-cd "Laglerh Prod (Pay as you Go)"
+cd "Laglerh-DevTest-MSDN"
 cd ./ResourceGroups
 
 dir
