@@ -1,5 +1,5 @@
 ## This is the content to the YouTube Video 1_Using Azure Cloudshell
-You can find the YouTube video [here]()
+You can find the YouTube video [here](https://www.youtube.com/watch?v=Npr9_CmTuGc&t=15s)
 
 The following content is available:
 * PowerShell deployment script
