@@ -104,4 +104,3 @@ Get-AzVM
 cd ~
 
 #endregion
-//1
