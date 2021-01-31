@@ -49,7 +49,9 @@
         $NIC = New-AzNetworkInterface -Name $NICName -ResourceGroupName $rgname -Location $resourcelocation -SubnetId $Vnet.Subnets[0].Id
 
         $VirtualMachine = New-AzVMConfig -VMName $VMName -VMSize $VMSize
-        $VirtualMachine = Set-AzVMOperatingSystem -VM $VirtualMachine -Windows -ComputerName $ComputerName -Credential $vmcredential -ProvisionVMAgent -EnableAutoUpdate
+        $VirtualMachine = Set-AzVMOperatingSystem -VM $VirtualMachine -Windows `
+                                                  -ComputerName $ComputerName -Credential $vmcredential `
+                                                  -ProvisionVMAgent -EnableAutoUpdate
         $VirtualMachine = Add-AzVMNetworkInterface -VM $VirtualMachine -Id $NIC.Id
 
         #Get Image Information:
@@ -61,7 +63,8 @@
 
         # $skus = Get-AzVMImageSKU -Location WestEurope -Publisher MicrosoftWindowsServer -Offer WindowsServer
         # all skus are available in the $skus variable
-        $VirtualMachine = Set-AzVMSourceImage -VM $VirtualMachine -PublisherName 'MicrosoftWindowsServer' -Offer 'WindowsServer' -Skus '2019-Datacenter-smalldisk' -Version latest
+        $VirtualMachine = Set-AzVMSourceImage -VM $VirtualMachine -PublisherName 'MicrosoftWindowsServer' `
+                                              -Offer 'WindowsServer' -Skus '2019-Datacenter-smalldisk' -Version latest
 
         New-AzVM -ResourceGroupName $rgname -Location $resourcelocation -VM $VirtualMachine -Verbose
 
@@ -69,14 +72,14 @@
 
     #Cleanup
     #region
-        Remove-AzResourceGroup -Name $rgname -Force
+        Remove-AzResourceGroup -Name $rgname -Force        
     #endregion
 
 #endregion
 
 #region PS CloudShell change to HomeDrive
 
-cd /home/admin/clouddrive  
+cd /home/hannes/clouddrive  
 mkdir "test1234"
 
 dir
