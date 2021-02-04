@@ -4,9 +4,10 @@
 
     #Create azure resourcegroup
     #region
-        $rgname = "rg-testyts-10"
+        $rgname = "rg-demoyts-10"
 
-        $rgstate = New-AzResourceGroup -name $rgname -Location $resourcelocation -Tag @{DemoFor="YTSession10"; Details="Demo RG for YoutTube Session 10"; Owner="Hannes Lagler-Gruener"}
+        $rgstate = New-AzResourceGroup -name $rgname -Location $resourcelocation `
+                                       -Tag @{DemoFor="YTSession10"; Details="Demo RG for YoutTube Session 10"; Owner="Hannes Lagler-Gruener"}
 
         if($rgstate.ProvisioningState -eq "Succeeded")
         {
@@ -18,7 +19,7 @@
 
     #Creation VNET:
     #region
-        $vnetname = "demo-vnet-yts10"
+        $vnetname = "demo-vnet-yts-10"
         $subname = "backend"
         $VnetAddressPrefix = "10.0.0.0/16"
         $SubnetAddressPrefix = "10.0.0.0/24"
@@ -40,8 +41,8 @@
     #region
 
         $vmcredential = Get-Credential
-        $ComputerName = "demo-yts-10-ps"
-        $VMName = "demo-yts-10-ps"
+        $ComputerName = "demo-yts-10"
+        $VMName = "demo-yts-10"
         #To get VM Sizes enter: Get-AzVMSize -Location WestEurope
         $VMSize = "Standard_B2ms"
         $NICName = $("$VMName-nic")
