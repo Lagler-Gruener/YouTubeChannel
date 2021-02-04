@@ -3,3 +3,4 @@ You can find the YouTube video [here]()
 
 The following content is available:
 * VM Deployment Script
+* The PPT content
