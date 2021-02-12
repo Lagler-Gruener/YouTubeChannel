@@ -6,6 +6,8 @@
     $marketplaceRole= "Marketplace Admin"
     $UsernameToAssignRoleFor = "<UPN wher role should be assign>"
     $MarketPlaceAdminRole = Get-AzRoleDefinition $marketplaceRole
-    New-AzRoleAssignment -SignInName $UsernameToAssignRoleFor -RoleDefinitionName $MarketPlaceAdminRole.Name -Scope "/providers/Microsoft.Marketplace"
+    New-AzRoleAssignment -SignInName $UsernameToAssignRoleFor `
+                         -RoleDefinitionName $MarketPlaceAdminRole.Name `
+                         -Scope "/providers/Microsoft.Marketplace"
 
 #endregion
