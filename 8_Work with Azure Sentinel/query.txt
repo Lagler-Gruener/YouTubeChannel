@@ -1,0 +1,16 @@
+Hunting/Query rule:
+
+SigninLogs
+| project UserId, IPAddress, Location, SourceSystem, TimeGenerated, UserPrincipalName
+| where UserPrincipalName == "user@domain.at"
+| extend IPCustomEntity = IPAddress
+| extend HostCustomEntity = SourceSystem
+| extend URLCustomEntity = Location
+| extend AccountCustomEntity = UserPrincipalName
+
+
+Livestream:
+
+SigninLogs
+| project UserId, IPAddress, Location, SourceSystem, TimeGenerated, UserPrincipalName
+| where UserPrincipalName == "user@domain.at"
