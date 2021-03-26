@@ -1,0 +1,2 @@
+az network firewall policy rule-collection-group create --name DefaultColGrp --policy-name <FirewallPolicyname> --priority 200 --resource-group <ResourceGroup>
+az network firewall policy rule-collection-group create --name WebAppColGrp --policy-name <FirewallPolicyname> --priority 300 --resource-group <ResourceGroup>
