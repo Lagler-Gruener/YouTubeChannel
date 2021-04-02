@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Diese Datei wird vom Veröffentlichungs-/Paketierungsprozess Ihres Webprojekts verwendet. Sie können das Verhalten dieses Prozesses anpassen,
+indem Sie diese MSBuild-Datei bearbeiten. Weitere Informationen hierzu finden Sie unter https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAASnxzu0jmBkWITp2FMD3QAwAAAAACAAAAAAADZgAAwAAAABAAAABzKDmOJqNXs16gUwA8ZrRwAAAAAASAAACgAAAAEAAAAHFgYNnA10iXSARruKOYuPOAAAAAnaO+ZZo+3HfTReF8bx3gmHa6QdaN5pcv+uy+mKfDR4tQTcyUyg6yJlyqqZ3Cm8cEnzLuOmr3ypoAlFYmlhxgpFr1Vz9ya9NwQpxP2TfqJ0bFaMK8ArBxvtTMYPv8zVBrfwnd/cpq2SEiNN6ghSdtz5A5HrQfhQjRiHJh2mjwlL8UAAAADBLzmJPCjeQayqP1/5mkQ/gS328=</EncryptedPassword>
+    <_PublishTargetUrl>ftp://waws-prod-am2-237.ftp.azurewebsites.windows.net/site/wwwroot</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="appsettings.Development.json">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>04/18/2020 21:14:06</publishTime>
+    </File>
+    <File Include="DemoPLWebApp.deps.json">
+      <publishTime>04/18/2020 21:15:24</publishTime>
+    </File>
+    <File Include="DemoPLWebApp.dll">
+      <publishTime>04/18/2020 21:15:17</publishTime>
+    </File>
+    <File Include="DemoPLWebApp.exe">
+      <publishTime>04/18/2020 21:15:18</publishTime>
+    </File>
+    <File Include="DemoPLWebApp.pdb">
+      <publishTime>04/18/2020 21:15:17</publishTime>
+    </File>
+    <File Include="DemoPLWebApp.runtimeconfig.json">
+      <publishTime>04/17/2020 16:58:54</publishTime>
+    </File>
+    <File Include="DemoPLWebApp.Views.dll">
+      <publishTime>04/18/2020 21:15:23</publishTime>
+    </File>
+    <File Include="DemoPLWebApp.Views.pdb">
+      <publishTime>04/18/2020 21:15:23</publishTime>
+    </File>
+    <File Include="Microsoft.Azure.KeyVault.dll">
+      <publishTime>02/03/2020 19:31:18</publishTime>
+    </File>
+    <File Include="Microsoft.Azure.KeyVault.WebKey.dll">
+      <publishTime>02/03/2020 19:31:14</publishTime>
+    </File>
+    <File Include="Microsoft.Azure.Services.AppAuthentication.dll">
+      <publishTime>02/07/2020 22:26:32</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Configuration.Abstractions.dll">
+      <publishTime>02/28/2020 23:29:22</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Configuration.AzureKeyVault.dll">
+      <publishTime>02/28/2020 23:29:54</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Configuration.dll">
+      <publishTime>02/28/2020 23:29:52</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Configuration.FileExtensions.dll">
+      <publishTime>02/28/2020 23:29:54</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.FileProviders.Abstractions.dll">
+      <publishTime>02/28/2020 23:30:14</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.FileProviders.Physical.dll">
+      <publishTime>02/28/2020 23:29:24</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.FileSystemGlobbing.dll">
+      <publishTime>02/28/2020 23:31:22</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Primitives.dll">
+      <publishTime>02/28/2020 23:29:32</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Clients.ActiveDirectory.dll">
+      <publishTime>08/14/2019 16:24:34</publishTime>
+    </File>
+    <File Include="Microsoft.Rest.ClientRuntime.Azure.dll">
+      <publishTime>10/26/2018 18:27:48</publishTime>
+    </File>
+    <File Include="Microsoft.Rest.ClientRuntime.dll">
+      <publishTime>02/27/2019 20:49:20</publishTime>
+    </File>
+    <File Include="Microsoft.Win32.Registry.dll">
+      <publishTime>11/15/2019 08:36:52</publishTime>
+    </File>
+    <File Include="Newtonsoft.Json.dll">
+      <publishTime>06/18/2017 13:57:10</publishTime>
+    </File>
+    <File Include="runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll">
+      <publishTime>01/17/2020 18:41:36</publishTime>
+    </File>
+    <File Include="runtimes/unix/lib/netcoreapp2.1/System.Security.Principal.Windows.dll">
+      <publishTime>11/15/2019 08:56:02</publishTime>
+    </File>
+    <File Include="runtimes/unix/lib/netstandard2.0/Microsoft.Win32.Registry.dll">
+      <publishTime>11/15/2019 08:53:52</publishTime>
+    </File>
+    <File Include="runtimes/win-arm64/native/sni.dll">
+      <publishTime>07/12/2017 11:24:24</publishTime>
+    </File>
+    <File Include="runtimes/win-x64/native/sni.dll">
+      <publishTime>07/12/2017 11:24:22</publishTime>
+    </File>
+    <File Include="runtimes/win-x86/native/sni.dll">
+      <publishTime>07/12/2017 11:24:22</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netcoreapp2.0/System.Security.AccessControl.dll">
+      <publishTime>11/15/2019 08:54:14</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netcoreapp2.0/System.Text.Encoding.CodePages.dll">
+      <publishTime>11/15/2019 08:54:18</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll">
+      <publishTime>01/17/2020 18:41:44</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netcoreapp2.1/System.Security.Principal.Windows.dll">
+      <publishTime>11/15/2019 08:56:10</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netstandard2.0/Microsoft.Win32.Registry.dll">
+      <publishTime>11/15/2019 08:53:32</publishTime>
+    </File>
+    <File Include="System.Data.SqlClient.dll">
+      <publishTime>01/17/2020 18:28:34</publishTime>
+    </File>
+    <File Include="System.Diagnostics.DiagnosticSource.dll">
+      <publishTime>11/15/2019 08:54:44</publishTime>
+    </File>
+    <File Include="System.Runtime.CompilerServices.Unsafe.dll">
+      <publishTime>02/21/2020 04:07:00</publishTime>
+    </File>
+    <File Include="System.Security.AccessControl.dll">
+      <publishTime>11/15/2019 08:37:40</publishTime>
+    </File>
+    <File Include="System.Security.Principal.Windows.dll">
+      <publishTime>11/15/2019 08:37:46</publishTime>
+    </File>
+    <File Include="System.Text.Encoding.CodePages.dll">
+      <publishTime>11/15/2019 08:37:52</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>04/18/2020 21:15:28</publishTime>
+    </File>
+    <File Include="wwwroot/css/site.css">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/favicon.ico">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/Images/companylogo.png">
+      <publishTime>01/07/2020 18:04:13</publishTime>
+    </File>
+    <File Include="wwwroot/Images/eventlogo.png">
+      <publishTime>04/17/2020 10:15:41</publishTime>
+    </File>
+    <File Include="wwwroot/js/site.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap.css">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap.css.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap.min.css">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.js.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.min.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/LICENSE">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/dist/additional-methods.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/dist/additional-methods.min.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/dist/jquery.validate.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/dist/jquery.validate.min.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/LICENSE.md">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery/dist/jquery.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery/dist/jquery.min.js">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery/dist/jquery.min.map">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery/LICENSE.txt">
+      <publishTime>02/14/2020 19:36:53</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

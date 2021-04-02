@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Demo WebApp Private Link";
+}
+
+    <div class="text-center">
+        <h1 class="display-4">Welcome to the private link demo Website</h1>
+        <p>Learn more about PL at <a href="https://www.cloudblogger.at/2020/04/22/next-level-azure-private-link/" target="_blank">my Blog.</a>.</p>        
+    </div>
+    <div style="font-family:'Segoe UI';">
+        <div style="position:fixed; left:20px; top:60px">
+            <img src="~/Images/companylogo.png" style="width:150px" />
+        </div>
+        <div style="position:fixed; right:20px; top:60px">
+            <img src="~/Images/eventlogo.png" style="width:150px" />
+        </div>
+    </div>
+    <div>
+        <h4>Connect to Azure KeyVault and get secred</h4>
+        <b>KeyVaultName:</b> @ViewBag.KeyVaultName
+        <br />
+        <b>KeyVaultIP:</b> @ViewBag.KeyVaultIP
+        <br />
+        <b>State:</b> @ViewBag.KeyVaultConnectionState
+        <hr />
+        <h4>Connect to database</h4>
+        <b>ServerName:</b> @ViewBag.SQLServerName
+        <br />
+        <b>ServerIP:</b> @ViewBag.SQLServerIP
+        <br />
+        <b>State:</b> @ViewBag.SQLConnectionState
+        <br />
+        <br />
+        <b>Total SQL entries:</b> @ViewBag.SQLEntriesreturn
+        <br />
+        <b>First SQL entry:</b> @ViewBag.SQLFirstEntry
+        <hr />
+        <h4>General state</h4>
+        <b>Error:</b>  @ViewBag.Error
+        <br />
+        <b>Error Message:</b> @ViewBag.ErrorMSG
+    </div>
