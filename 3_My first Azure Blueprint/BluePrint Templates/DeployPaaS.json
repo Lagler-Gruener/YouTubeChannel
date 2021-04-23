@@ -1,0 +1,144 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "AutomationAccountName": {
+      "type": "string",
+      "defaultValue": "ACP-AutomationAcc-BasicWS01"
+    },
+    "AppSvcPlanName": {
+      "type": "string",
+      "defaultValue": "ACP-BasicWS-AppSvcPlan01"
+    },
+    "WebAppName": {
+      "type": "string",
+      "defaultValue": "acp-webapp-basic-ws01"
+    },
+    "ApplicationInsightName": {
+      "type": "string",
+      "defaultValue": "acp-webapp-basic-ws-appinsight01"
+    },
+    "StorageAccountName": {
+      "type": "string",
+      "defaultValue": "straccbasicwsdemo02"
+    }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('AutomationAccountName')]",
+      "type": "Microsoft.Automation/automationAccounts",
+      "apiVersion": "2015-10-31",
+      "location": "[resourceGroup().location]",
+      "tags": {},
+      "properties": {
+        "sku": {
+          "name": "Free"
+        }
+      }
+    },
+    {
+      "name": "[parameters('AppSvcPlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2018-02-01",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "S1",
+        "capacity": 1
+      },
+      "properties": {
+        "name": "[parameters('AppSvcPlanName')]"
+      }
+    },
+    {
+      "name": "[parameters('WebAppName')]",
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2016-08-01",
+      "location": "[resourceGroup().location]",
+      "tags": {},
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('AppSvcPlanName'))]"
+      ],
+      "properties": {
+        "name": "[parameters('WebAppName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('AppSvcPlanName'))]"
+      }
+    },
+    {
+      "name": "[parameters('ApplicationInsightName')]",
+      "type": "Microsoft.Insights/autoscalesettings",
+      "apiVersion": "2015-04-01",
+      "location": "[resourceGroup().location]",
+      "tags": {},
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('AppSvcPlanName'))]"
+      ],
+      "properties": {
+        "name": "[parameters('ApplicationInsightName')]",
+        "profiles": [
+          {
+            "name": "Default",
+            "capacity": {
+              "minimum": 1,
+              "maximum": 2,
+              "default": 1
+            },
+            "rules": [
+              {
+                "metricTrigger": {
+                  "metricName": "CpuPercentage",
+                  "metricResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('AppSvcPlanName'))]",
+                  "timeGrain": "PT1M",
+                  "statistic": "Average",
+                  "timeWindow": "PT10M",
+                  "timeAggregation": "Average",
+                  "operator": "GreaterThan",
+                  "threshold": 80
+                },
+                "scaleAction": {
+                  "direction": "Increase",
+                  "type": "ChangeCount",
+                  "value": 1,
+                  "cooldown": "PT10M"
+                }
+              },
+              {
+                "metricTrigger": {
+                  "metricName": "CpuPercentage",
+                  "metricResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('AppSvcPlanName'))]",
+                  "timeGrain": "PT1M",
+                  "statistic": "Average",
+                  "timeWindow": "PT1H",
+                  "timeAggregation": "Average",
+                  "operator": "LessThan",
+                  "threshold": 60
+                },
+                "scaleAction": {
+                  "direction": "Decrease",
+                  "type": "ChangeCount",
+                  "value": 1,
+                  "cooldown": "PT1H"
+                }
+              }
+            ]
+          }
+        ],
+        "enabled": false,
+        "targetResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('AppSvcPlanName'))]"
+      }
+    },
+    {
+      "name": "[toLower(parameters('StorageAccountName'))]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-06-01",
+      "location": "[resourceGroup().location]",
+      "tags": {},
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "Storage"
+    }
+  ],
+  "outputs": {}
+}
