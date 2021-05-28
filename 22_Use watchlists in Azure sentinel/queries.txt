@@ -1,0 +1,34 @@
+Single Query:
+
+SigninLogs
+| where UserPrincipalName == "sentinel@domain.com"
+| project UserPrincipalName, AppDisplayName, ResultType, ResultDescription
+
+----------------------------------------------------------------------------------------------------------------
+
+Multi Users (V1)
+
+SigninLogs
+| where UserPrincipalName == "sentinel@domain.com" or UserPrincipalName == "sentinel2@domain.com"
+| project UserPrincipalName, AppDisplayName, ResultType, ResultDescription
+
+----------------------------------------------------------------------------------------------------------------
+
+Multi User (V2)
+
+let upns = datatable (name: string)[
+    "sentinel@domain.com", 
+    "sentinel2@domain.com"
+];
+SigninLogs
+| where UserPrincipalName in (upns)
+| project UserPrincipalName, AppDisplayName, ResultType, ResultDescription
+
+----------------------------------------------------------------------------------------------------------------
+
+Using watchlist
+
+let upns = (_GetWatchlist('DemoWatchList') | project UPN);
+SigninLogs
+| where UserPrincipalName in (upns)
+| project UserPrincipalName, AppDisplayName, ResultType, ResultDescription
