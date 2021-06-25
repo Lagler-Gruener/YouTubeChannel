@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "Rulename": {
+      "type": "String"
+    },
+    "workspacename": {
+      "type": "String"
+    }
+  },
+  "resources": [
+      {
+          "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+          "apiVersion": "2020-01-01",
+          "name": "[concat(parameters('workspacename'),'/Microsoft.SecurityInsights/',parameters('Rulename'))]",
+          "location": "[resourceGroup().location]",
+          "kind": "Scheduled",
+          "properties": {
+              "description": "That rule detects any changes on conditional access policies in azure ad",
+              "displayName": "[parameters('Rulename')]",
+              "enabled": true,
+              "query": "AuditLogs | where Category == 'Policy' | where OperationName == 'Update policy' or OperationName == 'Add policy' or OperationName == 'Delete policy' | where TargetResources[0].displayName <> 'Default Policy' | extend policyname = tostring(TargetResources[0].displayName) | extend initiatedby = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName) | project policyname, initiatedby, TargetResources[0].modifiedProperties, OperationName",
+              "queryFrequency": "PT20M",
+              "queryPeriod": "PT20M",
+              "severity": "Low",
+              "suppressionDuration": "PT1H",
+              "suppressionEnabled": false,
+              "triggerOperator": "GreaterThan",
+              "triggerThreshold": 0,
+              "entityMappings": [
+                  {
+                      "entityType": "Account",
+                      "fieldMappings": [
+                          {
+                              "identifier": "FullName",
+                              "columnName": "initiatedby"
+                          }
+                      ]
+                  },
+                  {
+                      "entityType": "Url",
+                      "fieldMappings": [
+                          {
+                              "identifier": "Url",
+                              "columnName": "policyname"
+                          }
+                      ]
+                  },
+                  {
+                      "entityType": "Process",
+                      "fieldMappings": [
+                          {
+                              "identifier": "ProcessId",
+                              "columnName": "OperationName"
+                          }
+                      ]
+                  }
+              ],
+              "tactics": [
+                  "CommandandControl"
+              ]
+          }
+      }
+  ]
+}
