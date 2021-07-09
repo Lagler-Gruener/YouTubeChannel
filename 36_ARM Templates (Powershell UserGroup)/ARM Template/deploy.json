@@ -1,0 +1,354 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "DeploymentType": {
+        "type": "string",
+        "defaultValue": "FullDeployment",
+        "allowedValues": [
+          "NetworkOnly",
+          "FullDeployment"
+        ],
+        "metadata": {
+            "description": "NetworkOnly deployes the network componentes and the FullDeployment the whole solution"
+        }
+      },
+      "VMName": {
+        "type": "string",
+        "defaultValue": "demovmwe01",
+        "minLength":6,
+        "maxLength":15,
+        "metadata": {
+          "description": "Minimum 5 chars, maximum 15 chars arer allowed!"
+        }
+      }            
+    },
+    "functions": [
+      {
+        "namespace": "functiondemo",
+          "members": {
+            "uniqueName": {
+              "parameters": [
+                {
+                  "name": "namePrefix",
+                  "type": "string"
+                }
+              ],
+              "output": {
+                "type": "string",
+                "value": "[concat(toLower(parameters('namePrefix')), uniqueString(resourceGroup().id))]"
+              }
+            }
+        }
+      }
+    ],
+    "variables": {
+    
+      //Variables using the function 'uniqueName'
+      "virtualNetworks_vnetwe_name": "[functiondemo.uniqueName('vnetwe')]",
+      "networkSecurityGroups_NSGFrontendWE_name": "[functiondemo.uniqueName('NSGFrontendWE')]",
+      "publicIPAddresses_demovmwe_ip_name": "[functiondemo.uniqueName('pip01')]",
+      "nicname_vm_we": "[functiondemo.uniqueName('nic01')]",
+  
+      "demovmwe01VnetID": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_vnetwe_name'),'Frontend')]",
+  
+      "dscurl": "<Define the DSC URL>"
+    },  
+    "resources": [
+      //Azure Network security group deployment
+      {
+        "type": "Microsoft.Network/networkSecurityGroups",
+        "apiVersion": "2018-12-01",
+        "name": "[variables('networkSecurityGroups_NSGFrontendWE_name')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "securityRules": [
+            {
+              "name": "HTTP-Allow",
+              "properties": {
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "80",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 110,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+              }
+            }
+          ]
+        }
+      },
+  
+      //Azure Virtual Network deployment, including a frontend subnet and network security group binding
+      {
+        "type": "Microsoft.Network/virtualNetworks",
+        "apiVersion": "2018-12-01",
+        "name": "[variables('virtualNetworks_vnetwe_name')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_NSGFrontendWE_name'))]"
+        ],
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes": [
+              "10.0.0.0/16"
+            ]
+          },
+          "subnets": [
+            {
+              "name": "Frontend",
+              "properties": {
+                "addressPrefix": "10.0.0.0/24",
+                "networkSecurityGroup": {
+                  "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_NSGFrontendWE_name'))]"
+                },
+                "serviceEndpoints": [],
+                "delegations": []
+              }
+            }
+          ],
+          "enableDdosProtection": false,
+          "enableVmProtection": false
+        }
+      },    
+  
+      //Azure VM public ip deployment
+      {
+        "condition": "[equals(parameters('DeploymentType'), 'FullDeployment')]", //--> condition deployment
+        "name": "[variables('publicIPAddresses_demovmwe_ip_name')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2016-03-30",
+        "dependsOn": [],
+        "properties": {
+          "publicIPAllocationMethod": "Dynamic",
+          "dnsSettings": {
+            "domainNameLabel": "[variables('publicIPAddresses_demovmwe_ip_name')]"
+          }
+        }
+      },
+
+      //Azure VM network interface deployment, including a subnet binding and public ip binding
+      {
+        "condition": "[equals(parameters('DeploymentType'), 'FullDeployment')]",  //--> condition deployment!!
+        "name": "[variables('nicname_vm_we')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2016-03-30",
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworks_vnetwe_name'))]",
+          "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_demovmwe_ip_name'))]"
+        ],
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Dynamic",
+                "subnet": {
+                  "id": "[variables('demovmwe01VnetID')]"
+                },
+                "publicIPAddress": {
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_demovmwe_ip_name'))]"
+                }
+              }
+            }
+          ]
+        }
+      },
+  
+      //Nested template deployment including receiving secure keys from Azure keyvault and vm deployment
+      {
+        "condition": "[equals(parameters('DeploymentType'), 'FullDeployment')]",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2020-10-01",
+        "name": "deployvmwithsecret",
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', variables('nicname_vm_we'))]"
+        ],
+        "properties": {
+          "mode": "Incremental",
+          "expressionEvaluationOptions": {
+            "scope": "inner"
+          },
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "VMadminusername": {
+                "type": "string"
+              },
+              "VMadminPassword": {
+                "type": "securestring"
+              },
+              "nicname_vm_we": {
+                "type": "string"
+              },
+              "dscurl": {
+                "type": "string"
+              },
+              "dsckey": {
+                "type": "securestring"
+              },
+              "ServerName": {
+                "type": "string"
+              }
+            },
+            "variables": {
+                "configurationModeFrequencyMins": "15",
+                "refreshFrequencyMins": "30"
+            },
+            "resources": [
+            {              
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2018-06-01",
+              "name": "[parameters('ServerName')]",
+              "location": "[resourceGroup().location]",              
+              "properties": {
+                "hardwareProfile": {
+                  "vmSize": "Standard_DS2_v2"
+                },
+                "storageProfile": {
+                  "osDisk": {
+                    "name": "[concat(tolower(parameters('ServerName')),'osdisk')]",
+                    "createOption": "FromImage",
+                    "managedDisk": {
+                      "storageAccountType": "Premium_LRS"
+                    }
+                  },
+                  "imageReference": {
+                    "publisher": "MicrosoftWindowsServer",
+                    "offer": "WindowsServer",
+                    "sku": "2016-Datacenter",
+                    "version": "latest"
+                  }
+                },
+                "networkProfile": {
+                  "networkInterfaces": [
+                    {
+                      "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nicname_vm_we'))]"
+                    }
+                  ]
+                },
+                "osProfile": {
+                  "computerName": "[parameters('ServerName')]",
+                  "adminUsername": "[parameters('VMadminusername')]",
+                  "adminPassword": "[parameters('VMadminPassword')]",
+                  "windowsConfiguration": {
+                    "enableAutomaticUpdates": true,
+                    "provisionVmAgent": true
+                  }
+                }
+              },
+              "resources": [
+                {
+                  "type": "extensions",
+                  "name": "Microsoft.Powershell.DSC",
+                  "apiVersion": "2017-03-30",
+                  "location": "westeurope",
+                  "dependsOn": [
+                    "[concat('Microsoft.Compute/virtualMachines/', parameters('ServerName'))]"
+                  ],
+                  "properties": {
+                    "publisher": "Microsoft.Powershell",
+                    "type": "DSC",
+                    "typeHandlerVersion": "2.75",
+                    "autoUpgradeMinorVersion": true,
+                    "protectedSettings": {
+                      "Items": {
+                        "registrationKeyPrivate": "[parameters('dsckey')]"
+                      }
+                    },
+                    "settings": {
+                      "modulesUrl": "",
+                      "Properties": [
+                        {
+                          "Name": "RegistrationKey",
+                          "Value": {
+                            "UserName": "PLACEHOLDER_DONOTUSE",
+                            "Password": "PrivateSettingsRef:registrationKeyPrivate"
+                          },
+                          "TypeName": "System.Management.Automation.PSCredential"
+                        },
+                        {
+                          "Name": "RegistrationUrl",
+                          "Value": "[parameters('dscurl')]",
+                          "TypeName": "System.String"
+                        },
+                        {
+                          "Name": "NodeConfigurationName",
+                          "Value": "deployiis.WebServerConfig",
+                          "TypeName": "System.String"
+                        },
+                        {
+                          "Name": "ConfigurationMode",
+                          "Value": "ApplyandAutoCorrect",
+                          "TypeName": "System.String"
+                        },
+                        {
+                          "Name": "RebootNodeIfNeeded",
+                          "Value": true,
+                          "TypeName": "System.Boolean"
+                        },
+                        {
+                          "Name": "ActionAfterReboot",
+                          "Value": "ContinueConfiguration",
+                          "TypeName": "System.String"
+                        },
+                        {
+                          "Name": "ConfigurationModeFrequencyMins",
+                          "Value": "[variables('configurationModeFrequencyMins')]",
+                          "TypeName": "System.Int32"
+                        },
+                        {
+                          "Name": "RefreshFrequencyMins",
+                          "Value": "[variables('refreshFrequencyMins')]",
+                          "TypeName": "System.Int32"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+            ]
+          },
+          "parameters": {
+            "VMadminusername": {
+              "value": "adminuser"
+            },
+            "VMadminPassword": {
+              "reference": {
+                "keyVault": {
+                  "id": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.KeyVault/vaults', 'armdemo')]"
+                },
+                "secretName": "VMadminPassword"
+              }
+            },
+            "nicname_vm_we":{
+              "value": "[variables('nicname_vm_we')]"
+            },
+            "dscurl":{
+              "value":"[variables('dscurl')]"
+            },
+            "dsckey": {
+              "reference": {
+                "keyVault": {
+                  "id": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.KeyVault/vaults', 'armdemo')]"
+                },
+                "secretName": "dsckey"
+              }
+            },
+            "ServerName":{  
+              "value": "[parameters('VMName')]"
+            }
+          }
+        }
+      }     
+    ]
+  }
