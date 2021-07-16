@@ -16,5 +16,5 @@ pool:
 - task: BicepBuild@0
   inputs:
     process: 'multiple'
-    sourceDirectory: '$(System.DefaultWorkingDirectory)/36_ARM Templates (Powershell UserGroup)/Bicep Template'
+    sourceDirectory: '$(System.DefaultWorkingDirectory)\36_ARM Templates (Powershell UserGroup)\Bicep Template\deploy.bicep'
     outputProcess: 'default'
