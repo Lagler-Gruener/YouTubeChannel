@@ -6,18 +6,29 @@
 trigger:
 - main
 
+variables:
+  resourceGroupName: 'example'
+  location: 'westeurope'
+  azureSubscription: 'AzureConnection'
+  resourcePrefix: 'bicep'
+
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: BicepInstall@0
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+      - task: AzureCLI@2
+        inputs:
+          scriptLocation: 'inlineScript'          
+          azureSubscription: $(azureSubscription)
+          scriptType: pscore
+          inlineScript: 'az bicep build --file deploy.bicep' 
+- task: PublishBuildArtifacts@1
   inputs:
-    version: '0.4.412'
-- task: BicepBuild@0
-  inputs:
-    process: 'multiple'
-    sourceDirectory: '$(System.DefaultWorkingDirectory)\36_ARM Templates (Powershell UserGroup)\Bicep Template\deploy.bicep'
-    stdout: false
-    outputProcess: 'default'
-    outputFile: '$(System.DefaultWorkingDirectory)\36_ARM Templates (Powershell UserGroup)\Bicep Template\deploy.json'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
 
