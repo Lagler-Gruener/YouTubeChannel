@@ -17,6 +17,7 @@ steps:
   inputs:
     process: 'multiple'
     sourceDirectory: '$(System.DefaultWorkingDirectory)\36_ARM Templates (Powershell UserGroup)\Bicep Template\deploy.bicep'
+    stdout: false
     outputProcess: 'default'
     outputFile: '$(System.DefaultWorkingDirectory)\36_ARM Templates (Powershell UserGroup)\Bicep Template\deploy.json'
 
