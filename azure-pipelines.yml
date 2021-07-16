@@ -25,10 +25,10 @@ stages:
           scriptLocation: 'inlineScript'          
           azureSubscription: $(azureSubscription)
           scriptType: pscore
-          inlineScript: 'az bicep build --file deploy.bicep' 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+          inlineScript: 'az bicep build --file deploy.bicep'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
 
