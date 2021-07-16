@@ -9,6 +9,7 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+steps:
 - task: BicepInstall@0
   inputs:
     version: '0.4.412'
