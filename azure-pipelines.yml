@@ -1,0 +1,20 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+- task: BicepInstall@0
+  inputs:
+    version: '0.4.412'
+
+- task: BicepBuild@0
+  inputs:
+    process: 'multiple'
+    sourceDirectory: '$(System.DefaultWorkingDirectory)/36_ARM Templates (Powershell UserGroup)/Bicep Template'
+    outputProcess: 'default'
