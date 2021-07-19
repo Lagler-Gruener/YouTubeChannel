@@ -15,7 +15,8 @@ var networkSecurityGroups_NSGFrontendWE_name = 'bicep-nsg-${uniqueString(toLower
 var publicIPAddresses_demovmwe_ip_name = 'bicep-pip-${uniqueString(toLower(resourceGroup().id))}'
 var nicname_vm_we = 'bicep-nic-${uniqueString(toLower(resourceGroup().id))}'
 
-var dscurl = 'https://b682dc0d-72ee-4f09-9854-f95707867191.agentsvc.we.azure-automation.net/accounts/b682dc0d-72ee-4f09-9854-f95707867191'
+var dscurl = '<Define the DSC URL>'
+
 
 //Get existing resource
 //##############################################################################
