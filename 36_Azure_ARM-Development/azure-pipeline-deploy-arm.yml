@@ -20,7 +20,7 @@ steps:
   inputs:
     azureSubscription: $(azureServiceConnection)
     scriptType: 'pscore'
-    scriptLocation: 'inlineScript'
+    scriptLocation: inlineScript
     inlineScript: |
       az --version
       az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile)
