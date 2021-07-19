@@ -8,7 +8,7 @@ trigger:
 
 variables:
   azureServiceConnection: 'MVP-Subscription'
-  resourceGroupName: 'rg-BicepTemplate-Demo'
+  resourceGroupName: 'rg-ARMTemplate-Demo'
   location: 'westeurope'
   templateFile: './36_Azure_ARM-Development/ARM_Template/deploy.json'
 
