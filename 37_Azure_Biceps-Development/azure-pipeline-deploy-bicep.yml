@@ -11,7 +11,7 @@ name: Deploy Bicep files
 variables:
   vmImageName: 'ubuntu-latest'
 
-  azureServiceConnection: 'MVP-Subscription'
+  azureServiceConnection: 'MVP-Subscription-Bicep'
   resourceGroupName: 'rg-BicepTemplate-Demo'
   location: 'westeurope'
   templateFile: './37_Azure_Biceps-Development/Bicep_Template/deploy.bicep'
