@@ -6,13 +6,23 @@
 trigger:
 - main
 
+variables:
+  azureServiceConnection: 'MVP-Subscription'
+  resourceGroupName: 'rg-BicepTemplate-Demo'
+  location: 'westeurope'
+  templateFile: './36_Azure_ARM-Development/ARM_Template/deploy.json'
+
 pool:
   vmImage: ubuntu-latest
 
 steps:
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'MVP-Subscription'
+    azureSubscription: $(azureServiceConnection)
     scriptType: 'pscore'
-    scriptLocation: 'scriptPath'
-    scriptPath: 
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az --version
+      az deployment group create --resource-group $(resourceGroupName) --template-file $(templateFile)
+
+
