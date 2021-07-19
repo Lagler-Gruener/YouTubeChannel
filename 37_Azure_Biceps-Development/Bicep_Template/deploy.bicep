@@ -21,7 +21,7 @@ var dscurl = '<Define the DSC URL>'
 //Get existing resource
 //##############################################################################
 resource SecredDemoKV 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'armdemo'
+  name: 'bicepdemo'
   scope: resourceGroup(subscription().subscriptionId, resourceGroup().name)
 }
 //##############################################################################
