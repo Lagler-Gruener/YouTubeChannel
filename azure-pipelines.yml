@@ -14,7 +14,7 @@ variables:
   azureServiceConnection: 'MVP-Subscription'
   resourceGroupName: 'rg-BicepTemplate-Demo'
   location: 'westeurope'
-  templateFile: './37_Azure_Biceps-Development/Bicep Template/deploy.bicep'
+  templateFile: './37_Azure_Biceps-Development/Bicep_Template/deploy.bicep'
 pool:
   vmImage: $(vmImageName)
 
