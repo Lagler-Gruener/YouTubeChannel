@@ -18,16 +18,6 @@ var nicname_vm_we = 'bicep-nic-${uniqueString(toLower(resourceGroup().id))}'
 var dscurl = '<Define the DSC URL>'
 
 
-//Get existing resource
-//##############################################################################
-resource SecredDemoKV 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'bicepdemo'
-  scope: resourceGroup(subscription().subscriptionId, resourceGroup().name)
-}
-//##############################################################################
-
-
-
 resource NSG 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
   name:networkSecurityGroups_NSGFrontendWE_name
   location: resourceGroup().location
@@ -113,6 +103,14 @@ resource VMNIC 'Microsoft.Network/networkInterfaces@2021-02-01' = if (Deployment
     ]
   }
 }
+
+//Get existing resource
+//##############################################################################
+resource SecredDemoKV 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'bicepdemo'
+  scope: resourceGroup(subscription().subscriptionId, resourceGroup().name)
+}
+//##############################################################################
 
 module deployvm 'deployvm.bicep' = {
   name: 'bicep-deployvmwithsecret'
