@@ -1,0 +1,316 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Demo Custom workbook\r\n---\r\n\r\nOur Tasks for today:\r\n\r\n* Design a workbook from scratch\r\n* Implement different visualizations\r\n* (Advanced) Implement a Graph visualization\r\n* Use Azure Actions in workbooks\r\n\r\n---\r\n\r\n## Have fun",
+        "style": "info"
+      },
+      "name": "text - 0"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "11fdd857-be2f-4642-8d98-701619c94d2b",
+            "version": "KqlParameterItem/1.0",
+            "name": "ShowDemoGrid",
+            "label": "Show Demo Grid",
+            "type": 10,
+            "isRequired": true,
+            "typeSettings": {
+              "additionalResourceOptions": []
+            },
+            "jsonData": "[\r\n { \"value\": \"No\", \"label\": \"No\", \"selected\":true },\r\n { \"value\": \"Yes\", \"label\": \"Yes\" }\r\n]\r\n",
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          }
+        ],
+        "style": "above",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "parameters - 6"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "SigninLogs\r\n| project TimeGenerated, UserPrincipalName, OperationName, ResultType, Location\r\n| summarize count() by UserPrincipalName",
+              "size": 1,
+              "timeContext": {
+                "durationMs": 2592000000
+              },
+              "exportFieldName": "UserPrincipalName",
+              "exportParameterName": "SelUPN",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "visualization": "tiles",
+              "tileSettings": {
+                "titleContent": {
+                  "columnMatch": "UserPrincipalName",
+                  "formatter": 1
+                },
+                "leftContent": {
+                  "columnMatch": "count_",
+                  "formatter": 12,
+                  "formatOptions": {
+                    "palette": "auto"
+                  },
+                  "numberFormat": {
+                    "unit": 17,
+                    "options": {
+                      "style": "decimal",
+                      "maximumFractionDigits": 2,
+                      "maximumSignificantDigits": 3
+                    }
+                  }
+                },
+                "showBorder": false
+              }
+            },
+            "name": "query - 0"
+          },
+          {
+            "type": 1,
+            "content": {
+              "json": "---"
+            },
+            "name": "text - 2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "let data = SigninLogs \r\n| where UserPrincipalName == \"{SelUPN}\"\r\n| join (OfficeActivity)\r\non $left.UserPrincipalName == $right.UserId\r\n| project SignInLUserPrincipalName=UserPrincipalName, SignInLCategory= Category, SignInLAppDisplayName= AppDisplayName, SignInAuthenticationRequirement= AuthenticationRequirement, SignInLIPAddress=IPAddress,\r\nOffice365RecordType=RecordType, Office365Operation=Operation,Office365OfficeWorkload=OfficeWorkload, Office365ClientIP=ClientIP, Office365SourceRelativeUrl=SourceRelativeUrl;\r\nlet links = (data\r\n    | project SourceID = strcat('SRC:',SignInLUserPrincipalName), TargetID = Office365OfficeWorkload);\r\nlet nodes = (data\r\n    | summarize by SignInLUserPrincipalName\r\n    | project Details=SignInLUserPrincipalName, ID=strcat('SRC:',SignInLUserPrincipalName), Value=SignInLUserPrincipalName)\r\n| union (data\r\n    | project Details=Office365OfficeWorkload, ID=Office365OfficeWorkload, Value=Office365OfficeWorkload\r\n    | summarize count() by Details, ID, Value);\r\nnodes\r\n| union (links)\r\n",
+              "size": 0,
+              "timeContext": {
+                "durationMs": 2592000000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "visualization": "graph",
+              "graphSettings": {
+                "type": 0,
+                "topContent": {},
+                "centerContent": {
+                  "columnMatch": "Value"
+                },
+                "nodeIdField": "ID",
+                "sourceIdField": "SourceID",
+                "targetIdField": "TargetID",
+                "graphOrientation": 3,
+                "showOrientationToggles": false,
+                "nodeSize": null,
+                "staticNodeSize": 100,
+                "colorSettings": null,
+                "hivesMargin": 5
+              }
+            },
+            "name": "query - 0"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "ShowDemoGrid",
+        "comparison": "isEqualTo",
+        "value": "Yes"
+      },
+      "name": "group-DemoGraph",
+      "styleSettings": {
+        "margin": "10px",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Demo Grid",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "SigninLogs\r\n| extend runbutton = \"Run\"\r\n| project TimeGenerated, UserPrincipalName, [\"Operation name\"]= OperationName, ResultType, runbutton",
+              "size": 1,
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "ResultType",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "icons",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "!=",
+                          "thresholdValue": "0",
+                          "representation": "3",
+                          "text": "Error {0}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "success",
+                          "text": "Okay {0}"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "columnMatch": "runbutton",
+                    "formatter": 7,
+                    "formatOptions": {
+                      "linkTarget": "ArmAction",
+                      "linkIsContextBlade": true,
+                      "armActionContext": {
+                        "path": "/subscriptions/{subscriptionID}/resourceGroups/{resourcegroupname}/providers/Microsoft.Logic/workflows/DemoWorkBook/triggers/manual/run?api-version=2016-06-01",
+                        "headers": [],
+                        "params": [],
+                        "body": "{\r\n  \"APP\":\"{ResultType_column}\"\r\n}",
+                        "httpMethod": "POST",
+                        "description": "# ARM actions can potentially modify resources.\n## Please use caution and include a confirmation message in this description when authoring this command."
+                      }
+                    }
+                  }
+                ],
+                "labelSettings": [
+                  {
+                    "columnId": "TimeGenerated",
+                    "label": "Time generated"
+                  },
+                  {
+                    "columnId": "ResultType",
+                    "label": "Result"
+                  }
+                ]
+              }
+            },
+            "name": "query - 0"
+          }
+        ]
+      },
+      "customWidth": "50",
+      "name": "group-DemoGrid",
+      "styleSettings": {
+        "margin": "10px",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Demo Chart",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "SigninLogs\r\n| project TimeGenerated, UserPrincipalName, OperationName, ResultType, Location\r\n| summarize count() by UserPrincipalName",
+              "size": 1,
+              "timeContext": {
+                "durationMs": 2592000000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "visualization": "piechart"
+            },
+            "name": "query - 0"
+          }
+        ]
+      },
+      "customWidth": "50",
+      "name": "group-DemoChart",
+      "styleSettings": {
+        "margin": "10px",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Demo Tile",
+        "items": []
+      },
+      "customWidth": "50",
+      "name": "group-DemoTile",
+      "styleSettings": {
+        "margin": "10px",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Demo Map",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "SigninLogs\r\n| extend latitude_ = tostring(parse_json(tostring(LocationDetails.geoCoordinates)).latitude)\r\n| extend longitude_ = tostring(parse_json(tostring(LocationDetails.geoCoordinates)).longitude)\r\n| project TimeGenerated, UserPrincipalName, OperationName, ResultType, Location, latitude_, longitude_\r\n| summarize count() by  UserPrincipalName, OperationName, ResultType, Location, latitude_, longitude_\r\n",
+              "size": 1,
+              "timeContext": {
+                "durationMs": 2592000000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "visualization": "map",
+              "mapSettings": {
+                "locInfo": "LatLong",
+                "locInfoColumn": "Location",
+                "latitude": "latitude_",
+                "longitude": "longitude_",
+                "sizeSettings": "DurationMs",
+                "sizeAggregation": "Sum",
+                "labelSettings": "Location",
+                "legendMetric": "DurationMs",
+                "legendAggregation": "Sum",
+                "itemColorSettings": {
+                  "nodeColorField": "DurationMs",
+                  "colorAggregation": "Sum",
+                  "type": "heatmap",
+                  "heatmapPalette": "greenRed"
+                }
+              }
+            },
+            "name": "query - 0"
+          }
+        ]
+      },
+      "customWidth": "50",
+      "name": "group-DemoMap",
+      "styleSettings": {
+        "margin": "10px",
+        "showBorder": true
+      }
+    }
+  ],
+  "fallbackResourceIds": [
+  ],
+  "fromTemplateId": "sentinel-UserWorkbook",
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
