@@ -4,15 +4,11 @@ param ([Parameter(Mandatory=$true)]
 $Log
 )
 
-
-
-
-
-$tenantId = "7d541db2-41f9-4f95-a2b7-c6d95b4e433d"; #the tenant ID in which the Data Collection Endpoint resides
-$appId = "03f4b07e-eaec-47f0-bfb0-beec0f0ea02a"; #the app ID created and granted permissions
-$appSecret = "cpC8Q~0S.o~tIgVrUG4vACnIUmlBOL53IRb27ctC"; #the secret created for the above app - never store your secrets in the source code
-$DcrImmutableId = "dcr-057dc8ffe58e4da2bed4226b761887f8"
-$DCEURI = "https://dce-demo-sentinel01-b3kp.westeurope-1.ingest.monitor.azure.com"
+$tenantId = ""
+$appId = ""
+$appSecret = ""
+$DcrImmutableId = ""
+$DCEURI = ""
 $Table = "CT_DCR_Test_CL"
 
 
