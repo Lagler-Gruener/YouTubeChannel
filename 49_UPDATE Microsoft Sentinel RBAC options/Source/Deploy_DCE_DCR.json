@@ -1,0 +1,89 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "DCE_Name": {
+            "type": "String"
+        },
+        "DCR_Name": {
+            "type": "String"
+        },
+        "LogA_WorkSpace_ID": {
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Insights/dataCollectionEndpoints",
+            "apiVersion": "2022-06-01",
+            "name": "[parameters('DCE_Name')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+
+            }
+        },
+
+        {
+            "type": "Microsoft.Insights/dataCollectionRules",
+            "apiVersion": "2022-06-01",
+            "name": "[parameters('DCR_Name')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Insights/dataCollectionEndpoints', parameters('DCE_Name'))]"
+            ],
+            "properties": {
+                "dataCollectionEndpointId": "[resourceId('Microsoft.Insights/dataCollectionEndpoints', parameters('DCE_Name'))]",
+                "streamDeclarations": {
+                    "Custom-CT_DCR_Test_CL": {
+                        "columns": [
+                            {
+                                "name": "Application",
+                                "type": "string"
+                            },
+                            {
+                                "name": "RawData",
+                                "type": "string"
+                            },
+                            {
+                                "name": "Time",
+                                "type": "datetime"
+                            }
+                        ]
+                    }
+                },
+                "dataSources": {},
+                "destinations": {
+                    "logAnalytics": [
+                        {
+                            "workspaceResourceId": "[parameters('LogA_WorkSpace_ID')]",
+                            "name": "LogAWorkSpace"
+                        }
+                    ]
+                },
+                "dataFlows": [
+                    {
+                        "streams": [
+                            "Custom-CT_DCR_Test_CL"
+                        ],
+                        "destinations": [
+                            "LogAWorkSpace"
+                        ],
+                        "transformKql": "source | extend TimeGenerated = todatetime(Time) | project-away Time | parse RawData with ClientIP: string ' ' *  ' ' \"[Dest: \" DestinationIP: string']' * \"[Type: \" RequestType:string']' * \"[Msg: \" Message: string']' * | where RequestType == \"Get\"",
+                        "outputStream": "Custom-CT_DCR_Test_CL"
+                    },
+                    {
+                        "streams": [
+                            "Custom-CT_DCR_Test_CL"
+                        ],
+                        "destinations": [
+                            "LogAWorkSpace"
+                        ],
+                        "transformKql": "source | extend TimeGenerated = todatetime(Time) | project-away Time | parse RawData with ClientIP: string ' ' *  ' ' \"[Dest: \" DestinationIP: string']' * \"[Type: \" RequestType:string']' * \"[Msg: \" Message: string']' * | where RequestType <> \"Get\"",
+                        "outputStream": "Custom-CT_DCR_Test2_CL"
+                    }                
+                ]
+            }
+        }
+    ]
+}

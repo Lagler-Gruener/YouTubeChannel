@@ -1,0 +1,10 @@
+source
+| extend TimeGenerated = todatetime(Time)
+| project-away Time
+| parse RawData with 
+    ClientIP: string
+    ' ' * 
+    ' '
+    "[Dest: " DestinationIP: string ']' *
+    "[Type: " RequestType: string ']' *
+    "[Msg: " Message: string  ']' *

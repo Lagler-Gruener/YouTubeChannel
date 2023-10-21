@@ -1,0 +1,12 @@
+[
+    {
+      "Application": "TestApp",
+      "RawData": "192.168.1.10 + + [Dest: 1.2.3.4] + + [Type: Get] - - [Msg: Testentry01]",
+      "Time": "2023-10-10T13:46:21.9837037Z"
+    },
+    {
+      "Application": "TestApp",
+      "RawData": "192.168.1.10 + + [Dest: 1.2.3.4] + + [Type: Get] - - [Msg: Testentry01]",
+      "Time": "2023-10-10T13:46:21.9902212Z"
+    }
+  ]
